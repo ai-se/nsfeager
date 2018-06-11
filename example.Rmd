@@ -1,0 +1,43 @@
+---
+title: "OpenRepGrid Example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(OpenRepGrid)
+```
+
+## R Markdown
+
+```{r}
+df <- importExcel("~/Documents/eager/example.xlsx")
+```
+
+## Including Plots
+
+```{r echo=T, results='hide', fig.show = 'hide'}
+if (interactive())
+  old.prompt <- devAskNewPage(TRUE)
+plot(0, type="n", xaxt="n", yaxt="n", xlab="", ylab="")
+text(1, 0, "Biplots", cex=5)
+```
+
+```{r}
+biplot2d(df)
+```
+
+```{r, fig.show='hide'}
+x <- scan(n=1)
+dev.off()
+dev.new()
+
+plot(0, type="n", xaxt="n", yaxt="n", xlab="", ylab="")
+text(1, 0, "Clustered \nBertin display", cex=5)
+```
+
+```{r}
+#### Clustered Bertin display ####
+bertinCluster(df)
+```
+
