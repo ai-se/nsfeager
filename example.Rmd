@@ -11,7 +11,8 @@ library(OpenRepGrid)
 ## R Markdown
 
 ```{r}
-df <- importExcel("~/Documents/eager/example.xlsx")
+df1 <- importExcel("./median_sample.xlsx")
+df2 <- importExcel("./sd_sample.xlsx")
 ```
 
 ## Including Plots
@@ -24,7 +25,11 @@ text(1, 0, "Biplots", cex=5)
 ```
 
 ```{r}
-biplot2d(df)
+biplot2d(df1)
+```
+
+```{r}
+biplot2d(df2)
 ```
 
 ```{r, fig.show='hide'}
@@ -38,6 +43,9 @@ text(1, 0, "Clustered \nBertin display", cex=5)
 
 ```{r}
 #### Clustered Bertin display ####
-bertinCluster(df)
+bertinCluster(df1)
 ```
 
+```{r}
+bertinCluster(df2)
+```
