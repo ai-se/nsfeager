@@ -11,8 +11,8 @@ library(OpenRepGrid)
 ## R Markdown
 
 ```{r}
-df1 <- importExcel("./median_sample.xlsx")
-df2 <- importExcel("./sd_sample.xlsx")
+df1 <- importExcel("./taylor_sample.xlsx")
+df2 <- importExcel("./daniel_sample.xlsx")
 ```
 
 ## Including Plots
