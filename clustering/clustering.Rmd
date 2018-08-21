@@ -1,0 +1,93 @@
+---
+title: "OpenRepGrid Example"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stats)
+library(cluster)
+```
+
+## R Markdown
+
+```{r}
+setwd("C:/Users/Huy Tu/Desktop/nsfeager/clustering")
+file_df <- read.csv(file="file_metrics.csv", header=TRUE, sep=",", stringsAsFactors=FALSE)
+func_df <- read.csv(file="func_metrics.csv", header=TRUE, sep=",", stringsAsFactors=FALSE)
+oo_df <- read.csv(file="oo_metrics.csv", header=TRUE, sep=",", stringsAsFactors=FALSE)
+project_names <- file_df$project
+oo_project_names <- oo_df$project
+```
+
+## Including Plots
+
+```{r}
+file_df <- file_df[, setdiff(names(file_df), c("X", "project"))]
+func_df <- func_df[, setdiff(names(func_df), c("X", "project"))]
+oo_df <- oo_df[, setdiff(names(oo_df), c("X", "project"))]
+```
+
+```{r}
+normalize <- function(x) {
+    return ((x - min(x)) / (max(x) - min(x)))
+}
+file_dfNorm <- as.data.frame(lapply(file_df, normalize))
+func_dfNorm <- as.data.frame(lapply(func_df, normalize))
+oo_dfNorm <- as.data.frame(lapply(oo_df, normalize))
+```
+
+```{r}
+methods <- c( "average", "single", "complete", "ward")
+
+ac <- function(df, x) {
+  return(agnes(df, method = x)$ac)
+}
+for(m in methods){
+  print(m)
+  print(ac(file_dfNorm, m))
+  print(ac(func_dfNorm, m))
+  print(ac(oo_dfNorm, m))
+} 
+```
+
+```{r}
+file_hc_1 <- agnes(file_dfNorm, method = "ward")
+func_hc_1 <- agnes(func_dfNorm, method = "ward")
+oo_hc_1 <- agnes(oo_dfNorm, method = "ward")
+```
+
+```{r}
+pltree(file_hc_1, project_names, cex = 0.6, hang = -1, main = "File Agglomerative HC Dendrogram")
+```
+
+```{r}
+pltree(func_hc_1, project_names, cex = 0.6, hang = -1, main = "Function Agglomerative HC Dendrogram") 
+```
+
+```{r}
+pltree(oo_hc_1, oo_project_names, cex = 0.6, hang = -1, main = "OO Agglomerative HC Dendrogram") 
+```
+
+```{r}
+# compute divisive hierarchical clustering
+file_hc_2 <- diana(file_dfNorm)
+func_hc_2 <- diana(func_dfNorm)
+oo_hc_2 <- diana(oo_dfNorm)
+
+
+# Divise coefficient; amount of clustering structure found
+print(file_hc_2$dc)
+print(func_hc_2$dc)
+print(oo_hc_2$dc)
+```
+
+
+```{r}
+# plot dendrogram
+pltree(file_hc_2, project_names, cex = 0.6, hang = -1, main = "File Divisive HC Dendrogram")
+pltree(func_hc_2, project_names, cex = 0.6, hang = -1, main = "Func Divisive HC Dendrogram")
+pltree(oo_hc_1, oo_project_names, cex = 0.6, hang = -1, main = "OO Divisive HC Dendrogram")
+
+```
+
